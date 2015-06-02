@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#3399FF">
+
+    <Button
+        android:id="@+id/menubutton"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:gravity="center"
+        android:background="@drawable/ic_format_list_bulleted_white_48dp"
+        android:textAllCaps="false"
+        android:textSize="24dp"
+        >
+        </Button>
+    <TextView
+        android:id="@+id/actionbar_title"
+        android:layout_toRightOf="@id/menubutton"
+        android:paddingLeft="10dp"
+        android:text="ENotePad"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:typeface="monospace"
+        android:textSize="24dp"
+        android:textColor="#ffffff"
+        android:textScaleX="1.1"
+        android:gravity="center">
+        </TextView>
+    <Button
+        android:id="@+id/syncbutton"
+        android:layout_width="30dp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/ic_cloud_upload_white_48dp"
+        android:textAllCaps="false"
+        android:textSize="24dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        >
+        </Button>
+</RelativeLayout>

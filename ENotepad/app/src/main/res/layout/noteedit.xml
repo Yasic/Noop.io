@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="280dp">
+
+    <com.example.esir.enotepad.noteactionbarlayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.example.esir.enotepad.noteactionbarlayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#b0b0b0">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#c9c9c9"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#c9c9c9">
+            <EditText
+                android:paddingLeft="5dp"
+                android:id="@+id/edittitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:textSize="46dp"
+                android:background="@null"/>
+        </ScrollView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#c9c9c9"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+        <EditText
+            android:paddingLeft="5dp"
+            android:id="@+id/editbody"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="note..."
+            android:textSize="28dp"
+             android:background="@null"/>
+    </ScrollView>
+    </LinearLayout>
+</LinearLayout>
