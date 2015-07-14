@@ -42,6 +42,7 @@ public class Myadapterfornote extends BaseAdapter {
         TextView notebody;
         TextView notetime;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Note Note = (Note)getItem(position);

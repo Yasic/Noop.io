@@ -1,11 +1,13 @@
 package com.example.esir.enotepad;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -29,43 +32,77 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private String[] data = {"Name","Note","Notebooks","Trash","Settings","About"};
+    //private String[] data = {"Name","Note","Notebooks","Trash","Settings","About"};
     private ListView listview;
-    private List<Drawmenu> drawmenu;
-    private List<Note> Note;
-    private Button menubutton , plusbutton;
-    private GridView notegridview;
-    private SoundPool sp;
-    public Fragment1 fragment1back,fragment1;
+    private List<Drawmenu> drawmenu;//侧边栏菜单
+    //private List<Note> Note;//笔记列表
+    private Button menubutton , plusbutton;//actionbar上的两个按钮
+    private String username,email,password;//昵称、邮箱、密码
+    private TextView usernametext;
+    public Fragment1 fragment1;//碎片
     public Fragment2 fragment2;
-    public String title,note,time,flag;
-    private FragmentManager fragmentManager;
+    public String title,note,time,flag,edittime;//分别为笔记标题、笔记内容、笔记时间、笔记状态标记
+    //private FragmentManager fragmentManager;
+    private AVObject testclass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.slide_right_in_anim, R.anim.still_nothing_anim);//activity切换动画
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setdefaultfragment();
+        AVOSCloud.initialize(getApplicationContext(), "16se9yws3bbmlnqluefpoone4pyllqsojvu7aayzfowi44su", "nz8gbcvz7zfy1zwqy9zpad2hg2kfoybpi1oeobji48dmzvvi");
+        setdefaultfragment();//默认碎片设置
         title = null;
         note = null;
         time = null;
-        init();
+        init();//初始化，实现侧边栏菜单监听
+        addbuttonlistener();//添加按钮实例和按钮监听
+    }
+
+    public void init(){
+        setdrawmenu();//添加侧边栏按钮
+        ListAdapter adapter = new Myadapter(this,drawmenu);
+        listview = (ListView)findViewById(R.id.menulist);//获取menulist实例
+        listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectitem(position);//侧边栏选项监听动作
+            }
+        });
+    }
+
+    public void inituserinfo(){
+        inituserinfo();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        username = bundle.getString("username");
+        email = bundle.getString("email");
+        password = bundle.getString("password");
+        usernametext = (TextView)findViewById(R.id.usernametext);//获取到姓名显示栏
+        usernametext.setText(username);
+    }
+
+    public void addbuttonlistener(){//添加按钮实例和按钮监听
         menubutton = (Button)findViewById(R.id.menubutton);
         menubutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DrawerLayout drawerlayout;
-                drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-                //***********************************************************//
+                drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);//获取侧边栏实例
                 if (drawerlayout.isDrawerOpen(Gravity.LEFT)) {
-                    drawerlayout.closeDrawer(Gravity.LEFT);
+                    drawerlayout.closeDrawer(Gravity.LEFT);//关闭
                 } else {
-                    drawerlayout.openDrawer(Gravity.LEFT);
+                    drawerlayout.openDrawer(Gravity.LEFT);//开启
                 }
             }
         });
@@ -73,22 +110,28 @@ public class MainActivity extends Activity {
         plusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sp = new SoundPool(10, AudioManager.STREAM_SYSTEM,5);
-                //int music = sp.load(getApplicationContext(),R.raw.clickbutton,1);
-                //sp.play(music,1,1,0,0,1);
                 Intent intent = new Intent(MainActivity.this, Noteedit.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("title",title);
-                bundle.putString("note",note);
-                bundle.putString("time",time);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, 8080);
+                startactivitywithresult(8080, intent);
             }
         });
     }
 
+    public void startactivitywithresult(int requstcode,Intent intent){
+        title = null;
+        note = null;
+        time = null;
+        flag = "-1";
+        Bundle bundle = new Bundle();
+        bundle.putString("title",title);
+        bundle.putString("note",note);
+        bundle.putString("time",time);
+        bundle.putString("flag", flag);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, requstcode);//启动Noteedit.class,传递null值
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)//activity回调
     {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 8080 && resultCode == 80801)
@@ -97,66 +140,42 @@ public class MainActivity extends Activity {
             title = bundle.getString("title");
             note = bundle.getString("note");
             flag = bundle.getString("flag");
-            String temptime = bundle.getString("time");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            time = simpleDateFormat.format(new java.util.Date());//get system time
-            fragment1 = new  Fragment1();
-            Bundle bundles = new Bundle();
-            bundles.putString("title",title);
-            bundles.putString("note",note);
-            bundles.putString("time", time);
-            bundle.putString("flag",flag);
-            fragment1.setArguments(bundle);//可以发送请求
-            getFragmentManager().beginTransaction().replace(R.id.mainlayout, fragment1).commit();
+            time = bundle.getString("time");
+            edittime = bundle.getString("edittime");
+            //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            //time = simpleDateFormat.format(new java.util.Date());//get system time
+            starfragment1();//启动fragment1
             title = null;
             note = null;
             time = null;
+            edittime = null;
         }
     }
 
     public void setdefaultfragment(){
-        fragment1 = new Fragment1();
-        Bundle bundle = new Bundle();
-        bundle.putString("title",title);
-        bundle.putString("note",note);
-        bundle.putString("time", time);
-        bundle.putString("flag",flag);
-        fragment1.setArguments(bundle);
-        getFragmentManager().beginTransaction().replace(R.id.mainlayout, fragment1).commit();
+        title = null;
+        note = null;
+        time = null;
+        flag = "-1";
+        starfragment1();//启动fragment1
         TextView textview = (TextView)findViewById(R.id.actionbar_title);
         textview.setText("Note");
     }
 
-    public void init(){
+    public void setdrawmenu(){
         drawmenu = new ArrayList<Drawmenu>();
         drawmenu.add(new Drawmenu(R.drawable.ic_file_outline_black_48dp,"Note"));
-        drawmenu.add(new Drawmenu(R.drawable.ic_server_black_48dp,"Notebooks"));
+        drawmenu.add(new Drawmenu(R.drawable.ic_server_black_48dp, "Notebooks"));
         drawmenu.add(new Drawmenu(R.drawable.ic_settings_black_48dp,"Settings"));
-        drawmenu.add(new Drawmenu(R.drawable.ic_delete_black_48dp,"Trash"));
+        drawmenu.add(new Drawmenu(R.drawable.ic_delete_black_48dp, "Trash"));
         drawmenu.add(new Drawmenu(R.drawable.ic_emoticon_devil_black_48dp, "About"));
-        ListAdapter adapter = new Myadapter(this,drawmenu);
-        listview = (ListView)findViewById(R.id.menulist);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectitem(position);
-            }
-        });
     }
 
     public void selectitem(int position){
             switch (position){
                 case 0:
                 {
-                    fragment1 = new  Fragment1();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title",title);
-                    bundle.putString("note",note);
-                    bundle.putString("time", time);
-                    bundle.putString("flag",flag);
-                    fragment1.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.mainlayout, fragment1).commit();
+                    starfragment1();//启动fragment1
                     TextView textview = (TextView)findViewById(R.id.actionbar_title);
                     textview.setText("Note");
                     break;
@@ -190,10 +209,44 @@ public class MainActivity extends Activity {
             }
     }
 
+    public void starfragment1(){
+        fragment1 = new Fragment1();
+        Bundle bundle = new Bundle();
+        bundle.putString("title",title);
+        bundle.putString("note",note);
+        bundle.putString("time", time);
+        bundle.putString("edittime",edittime);
+        //Log.i("time4",time);
+        bundle.putString("flag",flag);
+        fragment1.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.mainlayout, fragment1).commit();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK){//返回键返回上一个activity
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setMessage("Sure to leave?")
+                    .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            builder.create().show();
+        }
+        return false;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
-
 }

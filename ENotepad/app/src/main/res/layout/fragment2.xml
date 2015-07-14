@@ -2,11 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_height="wrap_content"
+    <GridView
+        android:id="@+id/notebookgridview"
         android:layout_width="match_parent"
-        android:text="fragment2"
-        android:textSize="24dp"
-        android:gravity="center">
-        </TextView>
+        android:layout_height="match_parent"
+        android:numColumns="1"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:horizontalSpacing="3dp"
+        android:verticalSpacing="3dp">
+    </GridView>
 </LinearLayout>

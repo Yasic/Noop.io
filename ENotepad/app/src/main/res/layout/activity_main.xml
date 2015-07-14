@@ -5,11 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <com.example.esir.enotepad.titlelayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </com.example.esir.enotepad.titlelayout>
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerlayout"
         android:layout_width="fill_parent"
@@ -18,54 +13,68 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <com.example.esir.enotepad.titlelayout
+                android:id="@+id/titlebar"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+            </com.example.esir.enotepad.titlelayout>
             <LinearLayout
+                android:id="@+id/mainlayout"
+                android:layout_below="@+id/titlebar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/mainlayout"
             >
             </LinearLayout>
             <Button
                 android:id="@+id/plusbutton"
-                android:layout_height="55dp"
-                android:layout_width="55dp"
-                android:background="@drawable/plus_circle"
+                android:layout_height="64dp"
+                android:layout_width="64dp"
+                android:background="@drawable/ic_plus_circle_bulue_48dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginBottom="22dp"
+                android:layout_marginRight="10dp">
                 </Button>
         </RelativeLayout>
     <LinearLayout
         android:layout_height="match_parent"
-        android:layout_width="250dp"
+        android:layout_width="280dp"
         android:layout_gravity="start"
         android:background="#ffffff"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_height="80dp"
+        <RelativeLayout
+            android:layout_height="200dp"
             android:layout_width="match_parent"
-            android:orientation="horizontal">
+            android:background="@drawable/noopii"
+            android:clickable="true"
+            >
             <ImageView
-                android:layout_height="80dp"
-                android:layout_width="80dp"
                 android:id="@+id/userimg"
-                android:background="@drawable/ic_account_circle_black_48dp">
+                android:layout_above="@+id/usernametext"
+                android:layout_height="75dp"
+                android:layout_width="75dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_account_circle_white_48dp">
                 </ImageView>
             <TextView
+                android:id="@+id/usernametext"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="75dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
                 android:gravity="center_vertical"
-                android:id="@+id/username"
+                android:layout_marginLeft="8dp"
                 android:textSize="26dp"
-                android:text="余烜"
+                android:text="余烜Yasic"
+                android:textColor="#ffffff"
                 android:paddingLeft="10dp">
                 </TextView>
-            </LinearLayout>
+            </RelativeLayout>
         <ListView
             android:id="@+id/menulist"
             android:layout_height="match_parent"
-            android:layout_width="250dp"
+            android:layout_width="280dp"
             android:listSelector="#b0b0b0"
             android:choiceMode="singleChoice"
             android:background="#ffffff">

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.security.KeyException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by ESIR on 2015/5/30.
@@ -20,13 +22,14 @@ import java.security.KeyException;
 public class Noteedit extends Activity{
     private String title;
     private String note;
-    private String time;
+    private String time,edittime;
     private EditText titleedittext,noteedittext;
     private Button notesavebutton,notebackbutton,notedeletebutton;
     private String flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        overridePendingTransition(R.anim.slide_right_in_anim, R.anim.still_nothing_anim);//activity切换动画
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noteedit);
         init();
@@ -35,15 +38,22 @@ public class Noteedit extends Activity{
         deletefunction();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode,KeyEvent event){
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            returnactivity();
+    public void init(){
+        notedeletebutton = (Button)findViewById(R.id.notedeletebutton);
+        notedeletebutton.setVisibility(View.GONE);//默认隐藏删除按钮
+        flag = "0";//默认新建
+        getintentdata();//获取intent里的值
+        titleedittext = (EditText)findViewById(R.id.edittitle);
+        noteedittext = (EditText)findViewById(R.id.editbody);
+        if(title != null | note != null){//不为null则说明是从fragment启动而来，需要修改
+            titleedittext.setText(title);
+            noteedittext.setText(note);
+            notedeletebutton.setVisibility(View.VISIBLE);//删除键可见
+            flag = "1";  //1则修改
         }
-        return false;
     }
 
-    public void deletefunction(){
+    public void deletefunction(){//设置删除button功能
         notedeletebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,8 +62,8 @@ public class Noteedit extends Activity{
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                title = "";
-                                note = "";
+                                title = "";//设置为空白而不是null
+                                note = "";//设置为空白而不是null，因为直接返回空白时也不可以创建note
                                 returnactivity();
                             }
                         })
@@ -68,25 +78,6 @@ public class Noteedit extends Activity{
         });
     }
 
-    public void init(){
-        notedeletebutton = (Button)findViewById(R.id.notedeletebutton);
-        notedeletebutton.setVisibility(View.GONE);
-        flag = "0";//默认新建
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        title = bundle.getString("title");
-        note = bundle.getString("note");
-        time = bundle.getString("time");//获取时间
-        titleedittext = (EditText)findViewById(R.id.edittitle);
-        noteedittext = (EditText)findViewById(R.id.editbody);
-        if(title != null | note != null){
-            titleedittext.setText(title);
-            noteedittext.setText(note);
-            notedeletebutton.setVisibility(View.VISIBLE);
-            flag = "1";//1则修改
-        }
-    }
-
     public void savefunction(){
         notesavebutton = (Button)findViewById(R.id.notesavebutton);
         notesavebutton.setOnClickListener(new View.OnClickListener() {
@@ -96,26 +87,26 @@ public class Noteedit extends Activity{
                 builder.setMessage("Are you sure to save?");
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        title = titleedittext.getText().toString();
-                        note = noteedittext.getText().toString();
-                        if(title.equals("")&note.equals("")) {
-                            Toast.makeText(getApplicationContext(),"Did you forget write note?",Toast.LENGTH_LONG).show();
+                    public void onClick(DialogInterface dialog, int which) {//保存后退出
+                        if(titleedittext.getText().toString().equals("")&noteedittext.getText().toString().equals("")) {
+                            Toast.makeText(getApplicationContext(),"Do you forget write note?",Toast.LENGTH_LONG).show();
                         }
                         else{
+                            title = titleedittext.getText().toString();
+                            note = noteedittext.getText().toString();
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            edittime = simpleDateFormat.format(new java.util.Date());//get system time
                             returnactivity();
                         }
                     }
                 });
                 builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
                 builder.setNeutralButton("reset", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {//重置按钮
                         titleedittext.setText("");
                         noteedittext.setText("");
                     }
@@ -141,9 +132,27 @@ public class Noteedit extends Activity{
         bundle.putString("title",title);
         bundle.putString("note",note);
         bundle.putString("time",time);
+        bundle.putString("edittime",edittime);
         bundle.putString("flag",flag);//1则修改，0则新建
         intent.putExtras(bundle);
         setResult(80801, intent);
         finish();
+    }
+
+    public void getintentdata(){
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        title = bundle.getString("title");
+        note = bundle.getString("note");
+        time = bundle.getString("time");//获取note上的时间
+        edittime = time;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK){//返回键返回上一个activity
+            returnactivity();
+        }
+        return false;
     }
 }

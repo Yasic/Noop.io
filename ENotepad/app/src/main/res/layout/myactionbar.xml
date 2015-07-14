@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:background="#3399FF">
+    android:layout_height="48dp"
+    android:background="#3399ff">
 
     <Button
         android:id="@+id/menubutton"
@@ -30,6 +30,7 @@
         android:textScaleX="1.1"
         android:gravity="center">
         </TextView>
+
     <Button
         android:id="@+id/syncbutton"
         android:layout_width="30dp"
