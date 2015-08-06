@@ -3,14 +3,20 @@ package com.example.esir.enotepad;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.security.KeyException;
@@ -36,6 +42,7 @@ public class Noteedit extends Activity{
         savefunction();
         backandpost();
         deletefunction();
+
     }
 
     public void init(){
@@ -46,6 +53,7 @@ public class Noteedit extends Activity{
         titleedittext = (EditText)findViewById(R.id.edittitle);
         noteedittext = (EditText)findViewById(R.id.editbody);
         if(title != null | note != null){//不为null则说明是从fragment启动而来，需要修改
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//关闭输入框弹出
             titleedittext.setText(title);
             noteedittext.setText(note);
             notedeletebutton.setVisibility(View.VISIBLE);//删除键可见
@@ -121,7 +129,19 @@ public class Noteedit extends Activity{
         notebackbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                returnactivity();
+                AlertDialog.Builder builder = new AlertDialog.Builder(Noteedit.this);
+                builder.setMessage("If you forget save your note,it will be THROWN!");
+                builder.setPositiveButton("to leave", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        returnactivity();}
+                });
+                builder.setNegativeButton("to save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.create().show();
             }
         });
     }
@@ -151,7 +171,19 @@ public class Noteedit extends Activity{
     @Override
     public boolean onKeyDown(int keyCode,KeyEvent event){
         if(keyCode == KeyEvent.KEYCODE_BACK){//返回键返回上一个activity
-            returnactivity();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Noteedit.this);
+            builder.setMessage("If you forget save your note,it will be THROWN!");
+            builder.setPositiveButton("to leave", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    returnactivity();}
+            });
+            builder.setNegativeButton("to save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder.create().show();
         }
         return false;
     }

@@ -13,4 +13,5 @@ public class Note {
         this.body = body;
         this.time = time;
     }
+    
 }

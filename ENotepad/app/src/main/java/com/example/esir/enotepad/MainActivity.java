@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.software.shell.fab.ActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class MainActivity extends Activity {
     public String title,note,time,flag,edittime;//分别为笔记标题、笔记内容、笔记时间、笔记状态标记
     //private FragmentManager fragmentManager;
     private AVObject testclass;
+    private ActionButton fabbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.slide_right_in_anim, R.anim.still_nothing_anim);//activity切换动画
@@ -66,6 +69,7 @@ public class MainActivity extends Activity {
         time = null;
         init();//初始化，实现侧边栏菜单监听
         addbuttonlistener();//添加按钮实例和按钮监听
+        addfabbutton();
     }
 
     public void init(){
@@ -106,10 +110,21 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        plusbutton = (Button)findViewById(R.id.plusbutton);
-        plusbutton.setOnClickListener(new View.OnClickListener() {
+        //plusbutton = (ImageButton)findViewById(R.id.plusbutton);
+
+    }
+
+    public void addfabbutton(){
+        fabbutton = (ActionButton)findViewById(R.id.plusbutton);
+        fabbutton.setShowAnimation(ActionButton.Animations.JUMP_FROM_DOWN);//设置动画set
+        fabbutton.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);//设置动画set
+        fabbutton.setImageDrawable(getResources().getDrawable(R.drawable.fab_plus_icon));//设置background
+        fabbutton.setButtonColor(getResources().getColor(R.color.fab_mdcolor));
+        fabbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Log.i("!", "test");
+                fabbutton.setButtonColor(getResources().getColor(R.color.fab_mdcolor_pressed));//fab按钮被点击后变色
                 Intent intent = new Intent(MainActivity.this, Noteedit.class);
                 startactivitywithresult(8080, intent);
             }
@@ -133,6 +148,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)//activity回调
     {
+        fabbutton.setButtonColor(getResources().getColor(R.color.fab_mdcolor));//颜色变回来
+        fabbutton.playShowAnimation();//fab按钮出现动画
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 8080 && resultCode == 80801)
         {

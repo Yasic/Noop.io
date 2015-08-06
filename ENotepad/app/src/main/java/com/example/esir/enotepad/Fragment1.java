@@ -10,6 +10,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +29,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
  * Created by ESIR on 2015/5/29.
  */
 public class Fragment1 extends Fragment {
-    private GridView notegridview;
+    private ListView notegridview;
     private View view;
     private  ListAdapter adapter;
     private TextView testtext;
@@ -39,7 +44,8 @@ public class Fragment1 extends Fragment {
     private ENoteSQLitedbhelper helper,helperinside;
     public List<Note> Note;
     public String title,note,time,flag;
-
+    private RecyclerView recyclerview;
+    private Fragone_recycler_adapter fragone_recycler_adapter;
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savadInstanceState){
         view = inflater.inflate(R.layout.fragment1,container,false);
@@ -67,24 +73,26 @@ public class Fragment1 extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity){
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
         Bundle bundle = getArguments();
         getintent(bundle);//获取intent的data值
+        Note = null;
         Note = new ArrayList<Note>();
-        helper = new ENoteSQLitedbhelper(getActivity(),"ENote",1);//开启数据库
-        dboutput(helper);
+        helper = new ENoteSQLitedbhelper(getActivity(),"ENote", 1);//开启数据库
         if(title!=null | note!=null) {//这里接收mainactivity传递的东西,如果不为空则需要新建插入到数据库
             //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             //time = simpleDateFormat.format(new java.util.Date());//get system time
-            Note.add(new Note(title, note,bundle.getString("edittime")));
+            //Note.add(new Note(title, note,bundle.getString("edittime")));
             ContentValues values = new ContentValues();
             values.put("title",title);
             values.put("note",note);
             values.put("time",bundle.getString("edittime"));
+            Log.i("test",title);
             helper.getWritableDatabase().insert("notetable",null,values);//插入新的数据
         }
-        helper.close();//此处关闭数据库
+        dboutput(helper);//数据库数据调出
+        helper.close();//此,处关闭数据库
         adapter = new Myadapterfornote(getActivity(),Note);//以Note生成adapter
     }
 
@@ -103,8 +111,6 @@ public class Fragment1 extends Fragment {
         ContentValues cv = new ContentValues();
         cv.put("title",title);
         cv.put("note",note);
-        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        //time = simpleDateFormat.format(new java.util.Date());//get system time
         cv.put("time", bundle.getString("edittime"));
         helperinside.getWritableDatabase().update("notetable", cv , "time = ?", new String[]{bundle.getString("time")});//更新数据库
         renew(helperinside);//更新gridview
@@ -124,7 +130,7 @@ public class Fragment1 extends Fragment {
     public void renew(ENoteSQLitedbhelper h){
         List<Note> TempNote = new ArrayList<Note>();//创建临时list
         Cursor cursor = h.getReadableDatabase().rawQuery("SELECT * FROM notetable", null);//开启游标
-        while(cursor.moveToNext()){
+        while(cursor.moveToNext()){//遍历全部元素
             TempNote.add(new Note(cursor.getString(1), cursor.getString(2), cursor.getString(3)));//添加到list
         }
         ListAdapter tempadapter = new Myadapterfornote(getActivity(),TempNote);//生成adapter
@@ -133,11 +139,11 @@ public class Fragment1 extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        notegridview.setAdapter(adapter);
     }
 
     public void  additemlistener(){
-        notegridview = (GridView)view.findViewById(R.id.notegridview);//获取gridview实例
+        notegridview = (ListView)view.findViewById(R.id.notegridview);//获取gridview实例
+        notegridview.setAdapter(adapter);
         notegridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
@@ -146,7 +152,7 @@ public class Fragment1 extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 helperinside = new ENoteSQLitedbhelper(getActivity(), "ENote", 1);//开启数据库
-                                TextView timetext = (TextView) view.findViewById(R.id.notetime);
+                                TextView timetext = (TextView) view.findViewById(R.id.notetime_cardview);
                                 String s = timetext.getText().toString();
                                 helperinside.getWritableDatabase().delete("notetable", "time = ?", new String[]{s});
                                 renew(helperinside);
@@ -170,13 +176,13 @@ public class Fragment1 extends Fragment {
                 //实现开启编辑通信
                 Intent intent = new Intent(getActivity(), Noteedit.class);
                 Bundle bundle = new Bundle();
-                TextView timetext = (TextView) view.findViewById(R.id.notetitle);
+                TextView timetext = (TextView) view.findViewById(R.id.notetitle_cardview);
                 String s = timetext.getText().toString();
                 bundle.putString("title", s);
-                timetext = (TextView) view.findViewById(R.id.notebody);
+                timetext = (TextView) view.findViewById(R.id.notebody_cardview);
                 s = timetext.getText().toString();
                 bundle.putString("note", s);
-                timetext = (TextView) view.findViewById(R.id.notetime);
+                timetext = (TextView) view.findViewById(R.id.notetime_cardview);
                 s = timetext.getText().toString();
                 bundle.putString("time", s);
                 timetext = null;

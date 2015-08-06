@@ -3,16 +3,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment1">
-    <GridView
+    android:id="@+id/fragment1"
+    android:background="#f7f8f3">
+    <ListView
         android:id="@+id/notegridview"
         android:layout_marginTop="3dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
+        android:scrollbars="none"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2"
-        android:horizontalSpacing="3dp"
-        android:verticalSpacing="3dp">
-    </GridView>
+        android:divider="#ffffff"
+        android:layout_height="match_parent">
+    </ListView>
 </LinearLayout>
