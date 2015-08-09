@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Interpolator;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -33,13 +35,14 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SignUpCallback;
 
+import org.w3c.dom.Text;
+
 import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 /**
  * Created by ESIR on 2015/6/3.
  */
@@ -56,6 +59,12 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         AVOSCloud.initialize(getApplicationContext(), "16se9yws3bbmlnqluefpoone4pyllqsojvu7aayzfowi44su", "nz8gbcvz7zfy1zwqy9zpad2hg2kfoybpi1oeobji48dmzvvi");
+
+        TextView login_appname = (TextView)findViewById(R.id.login_appname);
+        TextView login_appmessage = (TextView)findViewById(R.id.login_appmessage);
+        Typeface typefacea = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Bookman_Old_Style.TTF");
+        Typeface typefaceb = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Blackletter686BT.TTF");
+        login_appmessage.setTypeface(typefaceb);
         init();
     }
 

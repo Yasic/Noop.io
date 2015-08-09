@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.speech.tts.TextToSpeech;
@@ -37,6 +38,8 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import com.software.shell.fab.ActionButton;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +73,12 @@ public class MainActivity extends Activity {
         init();//初始化，实现侧边栏菜单监听
         addbuttonlistener();//添加按钮实例和按钮监听
         addfabbutton();
+
+        TextView actionbar_title = (TextView)findViewById(R.id.actionbar_title);
+        Typeface typeface = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Bookman_Old_Style.TTF");
+        actionbar_title.setTypeface(typeface);
+        Getfonts getfonts = new Getfonts(getApplication());
+        actionbar_title.setTypeface(getfonts.get_Futura_Book());
     }
 
     public void init(){

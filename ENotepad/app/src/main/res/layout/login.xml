@@ -15,23 +15,44 @@
             android:gravity="center_horizontal"
             android:layout_marginTop="72dp"
             android:text="Noop"
-            android:textSize="109dp"
+            android:textSize="118dp"
             android:textColor="#3399ff"
-            android:textScaleX="1.2"
-            android:shadowColor="#ff212121"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1"
-            android:typeface="serif"/>
-        <TextView
+            android:textScaleX="1.1" />
+        <!--
+        android:shadowColor="#ff212121"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_below="@+id/login_appname"
-            android:layout_marginTop="72dp"
-            android:gravity="center"
-            android:text="简约云笔记"
-            android:textColor="#616161"
-            android:textSize="24dp"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="72dp">
+            <TextView
+                android:id="@+id/login_appmessage"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="Yasic"
+                android:textColor="#616161"
+                android:textSize="48dp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#616161"
+                android:layout_toLeftOf="@id/login_appmessage"
+                android:layout_marginRight="5dp"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#616161"
+                android:layout_toRightOf="@id/login_appmessage"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
     </RelativeLayout>
 <!--
     <RelativeLayout
