@@ -47,16 +47,16 @@ public class Myadapterfornote extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Note Note = (Note)getItem(position);
         ViewHolder viewholder = null;
-        //if(convertView == null){//自定义listview存在数据乱序问题
+        if(convertView == null){//自定义listview存在数据乱序问题
             convertView = LayoutInflater.from(context).inflate(R.layout.noteitem_cardview,null);
-            viewholder = new ViewHolder();
-            viewholder.notetitle = (TextView)convertView.findViewById(R.id.notetitle_cardview);
-            viewholder.notebody = (TextView)convertView.findViewById(R.id.notebody_cardview);
-            viewholder.notetime = (TextView)convertView.findViewById(R.id.notetime_cardview);
-            viewholder.notetitle.setText(Note.title);
-            viewholder.notebody.setText(Note.body);
-            viewholder.notetime.setText(Note.time);
-        //}
+        }
+        viewholder = new ViewHolder();
+        viewholder.notetitle = (TextView)convertView.findViewById(R.id.notetitle_cardview);
+        viewholder.notebody = (TextView)convertView.findViewById(R.id.notebody_cardview);
+        viewholder.notetime = (TextView)convertView.findViewById(R.id.notetime_cardview);
+        viewholder.notetitle.setText(Note.title);
+        viewholder.notebody.setText(Note.body);
+        viewholder.notetime.setText(Note.time);
         return convertView;
     }
 }
