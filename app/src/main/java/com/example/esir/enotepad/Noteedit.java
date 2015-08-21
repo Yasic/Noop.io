@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 
 import java.security.KeyException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ESIR on 2015/5/30.
@@ -39,6 +42,7 @@ public class Noteedit extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noteedit);
         init();
+        initColorList();
         savefunction();
         backandpost();
         deletefunction();
@@ -61,6 +65,19 @@ public class Noteedit extends Activity{
         }
     }
 
+    public void initColorList(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        RecyclerView ColorRecyclerView = (RecyclerView)findViewById(R.id.ColorRecyclerView);
+        ColorRecyclerView.setLayoutManager(layoutManager);
+        List Colorlist = new ArrayList<Integer>();
+        for(int i = 0;i <= 18;i++){
+            Colorlist.add(i);
+        }
+        ColorRecyclerview_adapter colorRecyclerview_adapter = new ColorRecyclerview_adapter(this,Colorlist);
+        ColorRecyclerView.setAdapter(colorRecyclerview_adapter);
+    }
+
     public void deletefunction(){//设置删除button功能
         notedeletebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +89,7 @@ public class Noteedit extends Activity{
                             public void onClick(DialogInterface dialog, int which) {
                                 title = "";//设置为空白而不是null
                                 note = "";//设置为空白而不是null，因为直接返回空白时也不可以创建note
-                                returnactivity();
+                                returnactivity(1);
                             }
                         })
                         .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -96,21 +113,21 @@ public class Noteedit extends Activity{
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {//保存后退出
-                        if(titleedittext.getText().toString().equals("")&noteedittext.getText().toString().equals("")) {
-                            Toast.makeText(getApplicationContext(),"Do you forget write note?",Toast.LENGTH_LONG).show();
-                        }
-                        else{
+                        if (titleedittext.getText().toString().equals("") & noteedittext.getText().toString().equals("")) {
+                            Toast.makeText(getApplicationContext(), "Do you forget write note?", Toast.LENGTH_LONG).show();
+                        } else {
                             title = titleedittext.getText().toString();
                             note = noteedittext.getText().toString();
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             edittime = simpleDateFormat.format(new java.util.Date());//get system time
-                            returnactivity();
+                            returnactivity(1);
                         }
                     }
                 });
                 builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {}
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
                 });
                 builder.setNeutralButton("reset", new DialogInterface.OnClickListener() {
                     @Override
@@ -134,7 +151,8 @@ public class Noteedit extends Activity{
                 builder.setPositiveButton("to leave", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        returnactivity();}
+                        returnactivity(-1);
+                    }
                 });
                 builder.setNegativeButton("to save", new DialogInterface.OnClickListener() {
                     @Override
@@ -146,14 +164,19 @@ public class Noteedit extends Activity{
         });
     }
 
-    public void returnactivity(){
+    public void returnactivity(int ifsave){
         Intent intent = new Intent(Noteedit.this,MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("title",title);
         bundle.putString("note",note);
         bundle.putString("time",time);
         bundle.putString("edittime",edittime);
-        bundle.putString("flag",flag);//1则修改，0则新建
+        if(ifsave == -1){
+            bundle.putString("flag","-1");
+        }
+        else{
+            bundle.putString("flag",flag);//1则修改，0则新建
+        }
         intent.putExtras(bundle);
         setResult(80801, intent);
         finish();
@@ -176,7 +199,7 @@ public class Noteedit extends Activity{
             builder.setPositiveButton("to leave", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    returnactivity();}
+                    returnactivity(-1);}
             });
             builder.setNegativeButton("to save", new DialogInterface.OnClickListener() {
                 @Override

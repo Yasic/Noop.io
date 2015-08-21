@@ -3,4 +3,24 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="selecttext">#FF6600</string>
+
+    <color name="color_0">#ffffff</color>
+    <color name="color_1">#e51c23</color>
+    <color name="color_2">#e91e63</color>
+    <color name="color_3">#880e4f</color>
+    <color name="color_4">#9c27b0</color>
+    <color name="color_5">#673ab7</color>
+    <color name="color_6">#3f51b5</color>
+    <color name="color_7">#5677fc</color>
+    <color name="color_8">#03a9f4</color>
+    <color name="color_9">#00bcd4</color>
+    <color name="color_10">#009688</color>
+    <color name="color_11">#259b24</color>
+    <color name="color_12">#8bc34a</color>
+    <color name="color_13">#cddc39</color>
+    <color name="color_14">#ffeb3b</color>
+    <color name="color_15">#ffc107</color>
+    <color name="color_16">#ff9800</color>
+    <color name="color_17">#ff5722</color>
+    <color name="color_18">#795548</color>
 </resources>

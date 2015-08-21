@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
         time = null;
         init();//初始化，实现侧边栏菜单监听
         addbuttonlistener();//添加按钮实例和按钮监听
-        addfabbutton();
+        //addfabbutton();
 
         TextView actionbar_title = (TextView)findViewById(R.id.actionbar_title);
         Typeface typeface = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Bookman_Old_Style.TTF");
@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
     }
 
     public void addfabbutton(){
-        fabbutton = (ActionButton)findViewById(R.id.plusbutton);
+        //fabbutton = (ActionButton)findViewById(R.id.plusbutton);
         fabbutton.setShowAnimation(ActionButton.Animations.JUMP_FROM_DOWN);//设置动画set
         fabbutton.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);//设置动画set
         fabbutton.setImageDrawable(getResources().getDrawable(R.drawable.fab_plus_icon));//设置background

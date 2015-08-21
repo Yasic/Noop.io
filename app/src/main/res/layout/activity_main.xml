@@ -32,7 +32,7 @@
                 android:background="#f7f8f3"
             >
             </LinearLayout>
-            <com.software.shell.fab.ActionButton
+            <!--<com.software.shell.fab.ActionButton
                 android:id="@+id/plusbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
-                />
+                />-->
             <!--<Button
                 android:id="@+id/plusbutton"
                 android:layout_height="64dp"
