@@ -26,10 +26,6 @@
         <activity
             android:name=".Noteedit">
             </activity>
-        <activity
-            android:name=".Welcompage"
-            android:label="Noop">
-        </activity>
     </application>
 
 </manifest>
