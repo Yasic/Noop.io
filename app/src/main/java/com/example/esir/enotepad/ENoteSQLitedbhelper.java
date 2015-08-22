@@ -11,7 +11,7 @@ public class ENoteSQLitedbhelper extends SQLiteOpenHelper {
     final String SQL_CREATE_TABLE = "create table NOTETABLE (" +
             "_id integer primary key autoincrement, " +
             "TITLE varchar, " +
-            "NOTE varchar,TIME varchar)";
+            "NOTE varchar,TIME varchar,COLOR varchar)";
 
     public ENoteSQLitedbhelper(Context context,String name,int version){
         super(context,name,null,version);

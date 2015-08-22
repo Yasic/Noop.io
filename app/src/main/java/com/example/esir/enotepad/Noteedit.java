@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.security.KeyException;
@@ -32,6 +34,7 @@ public class Noteedit extends Activity{
     private String title;
     private String note;
     private String time,edittime;
+    private String notecolor;
     private EditText titleedittext,noteedittext;
     private Button notesavebutton,notebackbutton,notedeletebutton;
     private String flag;
@@ -52,10 +55,11 @@ public class Noteedit extends Activity{
     public void init(){
         notedeletebutton = (Button)findViewById(R.id.notedeletebutton);
         notedeletebutton.setVisibility(View.GONE);//默认隐藏删除按钮
+        notecolor = "0";//默认为白色
         flag = "0";//默认新建
-        getintentdata();//获取intent里的值
         titleedittext = (EditText)findViewById(R.id.edittitle);
         noteedittext = (EditText)findViewById(R.id.editbody);
+        getintentdata();//获取intent里的值
         if(title != null | note != null){//不为null则说明是从fragment启动而来，需要修改
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//关闭输入框弹出
             titleedittext.setText(title);
@@ -71,11 +75,20 @@ public class Noteedit extends Activity{
         RecyclerView ColorRecyclerView = (RecyclerView)findViewById(R.id.ColorRecyclerView);
         ColorRecyclerView.setLayoutManager(layoutManager);
         List Colorlist = new ArrayList<Integer>();
-        for(int i = 0;i <= 18;i++){
+        Getcolors getcolors = new Getcolors();
+        for(int i = 0;i < getcolors.getColorCount();i++){
             Colorlist.add(i);
         }
-        ColorRecyclerview_adapter colorRecyclerview_adapter = new ColorRecyclerview_adapter(this,Colorlist);
+        final ColorRecyclerview_adapter colorRecyclerview_adapter = new ColorRecyclerview_adapter(this,Colorlist);
         ColorRecyclerView.setAdapter(colorRecyclerview_adapter);
+        colorRecyclerview_adapter.setOnItemClickListener(new ColorRecyclerview_adapter.OnRecyclerViewItemClickListener(){
+            @Override
+            public void onItemClick(View view,String data){
+                Getcolors getcolors = new Getcolors();
+                changeColor(data);
+                notecolor = data;
+            }
+        });
     }
 
     public void deletefunction(){//设置删除button功能
@@ -171,6 +184,7 @@ public class Noteedit extends Activity{
         bundle.putString("note",note);
         bundle.putString("time",time);
         bundle.putString("edittime",edittime);
+        bundle.putString("notecolor",notecolor);
         if(ifsave == -1){
             bundle.putString("flag","-1");
         }
@@ -188,7 +202,17 @@ public class Noteedit extends Activity{
         title = bundle.getString("title");
         note = bundle.getString("note");
         time = bundle.getString("time");//获取note上的时间
+        notecolor = bundle.getString("notecolor");
+        changeColor(notecolor);
         edittime = time;
+    }
+
+    public void changeColor(String notecolor){
+        Getcolors getcolors = new Getcolors();
+        Log.i("notecolor",notecolor);
+        titleedittext.setBackgroundResource(getcolors.getColor(Integer.valueOf(notecolor)));
+        ScrollView edittext_scrollview = (ScrollView)findViewById(R.id.edittext_scrollview);
+        edittext_scrollview.setBackgroundResource(getcolors.getColor(Integer.valueOf(notecolor)));
     }
 
     @Override

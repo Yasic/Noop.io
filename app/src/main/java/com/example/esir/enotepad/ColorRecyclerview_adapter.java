@@ -2,7 +2,9 @@ package com.example.esir.enotepad;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,7 +15,8 @@ import java.util.List;
 /**
  * Created by ESIR on 2015/8/21.
  */
-public class ColorRecyclerview_adapter extends RecyclerView.Adapter<ColorRecyclerview_adapter.ViewHolder> {
+public class ColorRecyclerview_adapter extends RecyclerView.Adapter<ColorRecyclerview_adapter.ViewHolder>
+        implements View.OnClickListener{
     private List<Integer> ColorNames;
     private List<Integer> list = new ArrayList(){{
         add(R.color.color_0);
@@ -36,6 +39,28 @@ public class ColorRecyclerview_adapter extends RecyclerView.Adapter<ColorRecycle
         add(R.color.color_17);
         add(R.color.color_18);
     }};
+
+    public Integer getColorName(String i){
+        Getcolors getcolors = new Getcolors();
+        return getcolors.getColor(Integer.valueOf(i));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(onRecyclerViewItemClickListener != null){
+            onRecyclerViewItemClickListener.onItemClick(v,(String)v.getTag());
+        }
+    }
+
+    public static interface  OnRecyclerViewItemClickListener {
+        void onItemClick(View view,String data);
+    }
+    private  OnRecyclerViewItemClickListener onRecyclerViewItemClickListener = null;
+
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+        this.onRecyclerViewItemClickListener = listener;
+    }
+
     public ColorRecyclerview_adapter(Context context,List<Integer> ColorNames){
         this.ColorNames = ColorNames;
     }
@@ -44,7 +69,9 @@ public class ColorRecyclerview_adapter extends RecyclerView.Adapter<ColorRecycle
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup,int viewType){
         View view = View.inflate(viewGroup.getContext(),R.layout.coloritem,null);//创建一个View,用到了自定义的布局
         ViewHolder holder = new ViewHolder(view);//创建一个ViewHolder
-        holder.defaultText.setBackgroundResource(list.get(viewType));
+        Getcolors getcolors = new Getcolors();
+        holder.defaultText.setBackgroundResource(getcolors.getColor(viewType));
+        view.setOnClickListener(this);
         //holder.itemView.setBackgroundResource(list.get(viewType));
         return holder;
     }
@@ -53,6 +80,7 @@ public class ColorRecyclerview_adapter extends RecyclerView.Adapter<ColorRecycle
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         // 绑定数据到ViewHolder上
         final int Colorname = (int)getItem(i);
+        viewHolder.itemView.setTag(String.valueOf(i));
         //viewHolder.itemView.setBackgroundResource(list.get(Colorname));
         //Log.i("Colorname", String.valueOf(i));
     }

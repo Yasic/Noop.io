@@ -20,7 +20,8 @@
             android:id="@+id/noteitemstext_cardview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_toLeftOf="@+id/notecolorLinearLayout">
             <TextView
                 android:id="@+id/notetitle_cardview"
                 android:layout_width="match_parent"
@@ -49,6 +50,29 @@
                 android:layout_height="wrap_content"
                 android:textSize="16dp">
             </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/notecolorLinearLayout"
+            android:orientation="vertical"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+            <android.support.v7.widget.CardView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:cardCornerRadius="5dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+                <TextView
+                    android:id="@+id/notecolorTextView"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="16dp"/>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

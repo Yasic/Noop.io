@@ -23,6 +23,7 @@ public class titlelayout extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.myactionbar,this);
         Button menubutton = (Button)findViewById(R.id.menubutton);
         Button asyncbutton = (Button)findViewById(R.id.syncbutton);
+        Button sortbutton = (Button)findViewById(R.id.sortbutton);
         menubutton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

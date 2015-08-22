@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -49,9 +50,11 @@ public class Fragment1 extends Fragment {
     private ENoteSQLitedbhelper helper,helperinside;
     public List<Note> Note;
     public String title,note,time,flag;
+    public String notecolor;
     private RecyclerView recyclerview;
     private Fragone_recycler_adapter fragone_recycler_adapter;
     private ActionButton FABbutton;
+    private String sortflag = null;
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savadInstanceState){
         view = inflater.inflate(R.layout.fragment1,container,false);
@@ -89,10 +92,11 @@ public class Fragment1 extends Fragment {
         super.onAttach(activity);
         Bundle bundle = getArguments();
         getintent(bundle);//获取intent的data值
+        sortflag = bundle.getString("sortflag");
         Note = null;
         Note = new ArrayList<Note>();
         helper = new ENoteSQLitedbhelper(getActivity(),"ENote", 1);//开启数据库
-        if(getIntent_title(bundle) != null | getIntent_note(bundle) != null) {//这里接收mainactivity传递的东西,如果不为空则需要新建插入到数据库
+        /*if(getIntent_title(bundle) != null | getIntent_note(bundle) != null) {//这里接收mainactivity传递的东西,如果不为空则需要新建插入到数据库
             //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             //time = simpleDateFormat.format(new java.util.Date());//get system time
             //Note.add(new Note(title, note,bundle.getString("edittime")));
@@ -100,9 +104,10 @@ public class Fragment1 extends Fragment {
             values.put("TITLE",getIntent_title(bundle));
             values.put("NOTE",getIntent_note(bundle));
             values.put("TIME",bundle.getString("edittime"));
-            Log.i("test", title);
+            values.put("COLOR",getIntent_notecolor(bundle));
+            Log.i("test2test", title);
             helper.getWritableDatabase().insert("NOTETABLE", null, values);//插入新的数据
-        }
+        }*/
         dboutput(helper);//数据库数据调出
         helper.close();//此处关闭数据库
         adapter = new Myadapterfornote(getActivity(),Note);//以Note生成adapter
@@ -121,10 +126,11 @@ public class Fragment1 extends Fragment {
                 FABbutton.setButtonColor(getResources().getColor(R.color.fab_mdcolor_pressed));//fab按钮被点击后变色
                 Intent intent = new Intent(getActivity(), Noteedit.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("title",null);
-                bundle.putString("note",null);
-                bundle.putString("time",null);
+                bundle.putString("title", null);
+                bundle.putString("note", null);
+                bundle.putString("time", null);
                 bundle.putString("flag", "-1");
+                bundle.putString("notecolor", "0");
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 8080);
             }
@@ -135,8 +141,9 @@ public class Fragment1 extends Fragment {
         helperinside = new ENoteSQLitedbhelper(getActivity(),"ENote", 1);//开启数据库
         ContentValues values = new ContentValues();
         values.put("TITLE",getIntent_title(bundle));
-        values.put("NOTE",getIntent_note(bundle));
-        values.put("TIME",bundle.getString("edittime"));
+        values.put("NOTE", getIntent_note(bundle));
+        values.put("TIME", bundle.getString("edittime"));
+        values.put("COLOR",getIntent_notecolor(bundle));
         //Log.i("test", title);
         helperinside.getWritableDatabase().insert("NOTETABLE", null, values);//插入新的数据
         renew(helperinside);
@@ -156,6 +163,7 @@ public class Fragment1 extends Fragment {
         cv.put("TITLE",getIntent_title(bundle));
         cv.put("NOTE",getIntent_note(bundle));
         cv.put("TIME", bundle.getString("edittime"));
+        cv.put("COLOR",getIntent_notecolor(bundle));
         helperinside.getWritableDatabase().update("NOTETABLE", cv, "TIME = ?", new String[]{bundle.getString("time")});//更新数据库
         renew(helperinside);//更新gridview
         helperinside.close();//关闭数据库
@@ -165,12 +173,19 @@ public class Fragment1 extends Fragment {
     }
 
     public void dboutput(ENoteSQLitedbhelper h){//数据库数据遍历输出
-        Cursor cursor = h.getReadableDatabase().query("NOTETABLE",null,null,null,null,null,"TIME DESC");
+        Cursor cursor = null;
+        if(sortflag.equals("time")){
+            cursor = h.getReadableDatabase().query("NOTETABLE",null,null,null,null,null,"TIME DESC");
+        }
+        else if(sortflag.equals("notecolor")){
+            cursor = h.getReadableDatabase().query("NOTETABLE",null,null,null,null,null,"COLOR");
+        }
         while (cursor.moveToNext()) {
             Note.add(new Note(
                     cursor.getString(cursor.getColumnIndex("TITLE")),
                     cursor.getString(cursor.getColumnIndex("NOTE")),
-                    cursor.getString(cursor.getColumnIndex("TIME"))));
+                    cursor.getString(cursor.getColumnIndex("TIME")),
+                    cursor.getString(cursor.getColumnIndex("COLOR"))));
         }
     }
 
@@ -181,7 +196,8 @@ public class Fragment1 extends Fragment {
             Note.add(new Note(
                     cursor.getString(cursor.getColumnIndex("TITLE")),
                     cursor.getString(cursor.getColumnIndex("NOTE")),
-                    cursor.getString(cursor.getColumnIndex("TIME"))));//添加到list
+                    cursor.getString(cursor.getColumnIndex("TIME")),
+                    cursor.getString(cursor.getColumnIndex("COLOR"))));//添加到list
         }
         adapter.notifyDataSetChanged();
         noteList.invalidateViews();
@@ -235,6 +251,15 @@ public class Fragment1 extends Fragment {
                 postText = (TextView) view.findViewById(R.id.notetime_cardview);
                 postText_String = postText.getText().toString();
                 bundle.putString("time", postText_String);
+                ENoteSQLitedbhelper color_helper = new ENoteSQLitedbhelper(getActivity(), "ENote", 1);//打开数据库
+                Cursor cursor = color_helper.getReadableDatabase().query("NOTETABLE", new String[]{"COLOR"},
+                        "TIME=?", new String[]{postText_String}, null, null, null);
+                String note_color = "0";
+                while(cursor.moveToNext()){
+                    note_color = cursor.getString(cursor.getColumnIndex("COLOR"));
+                }
+                color_helper.close();
+                bundle.putString("notecolor",note_color);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 8080);
             }
@@ -246,6 +271,7 @@ public class Fragment1 extends Fragment {
         note = bundle.getString("note");
         time = bundle.getString("time");
         flag = bundle.getString("flag");
+        notecolor = bundle.getString("notecolor");
     }
 
     public String getIntent_title(Bundle bundle){
@@ -263,4 +289,6 @@ public class Fragment1 extends Fragment {
     public String getIntent_flag(Bundle bundle){
         return bundle.getString("flag");
     }
+
+    public String getIntent_notecolor(Bundle bundle){return bundle.getString("notecolor");}
 }

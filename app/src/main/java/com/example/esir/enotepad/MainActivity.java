@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     private ListView listview;
     private List<Drawmenu> drawmenu;//侧边栏菜单
     //private List<Note> Note;//笔记列表
-    private Button menubutton , plusbutton;//actionbar上的两个按钮
+    private Button menubutton , plusbutton , sortbutton;//actionbar上的两个按钮
     private String username,email,password;//昵称、邮箱、密码
     private TextView usernametext;
     public Fragment1 fragment1;//碎片
@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
     //private FragmentManager fragmentManager;
     private AVObject testclass;
     private ActionButton fabbutton;
+    private Integer sortFlag = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.slide_right_in_anim, R.anim.still_nothing_anim);//activity切换动画
@@ -119,6 +120,20 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        sortbutton = (Button)findViewById(R.id.sortbutton);
+        sortbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sortFlag == 1){
+                    starfragment1("notecolor");
+                    sortFlag = -1;
+                }
+                else if(sortFlag == -1){
+                    starfragment1("time");
+                    sortFlag = 1;
+                }
+            }
+        });
         //plusbutton = (ImageButton)findViewById(R.id.plusbutton);
 
     }
@@ -170,7 +185,7 @@ public class MainActivity extends Activity {
             edittime = bundle.getString("edittime");
             //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             //time = simpleDateFormat.format(new java.util.Date());//get system time
-            starfragment1();//启动fragment1
+            starfragment1("time");//启动fragment1
             title = null;
             note = null;
             time = null;
@@ -183,7 +198,7 @@ public class MainActivity extends Activity {
         note = null;
         time = null;
         flag = "-1";
-        starfragment1();//启动fragment1
+        starfragment1("time");//启动fragment1
         TextView textview = (TextView)findViewById(R.id.actionbar_title);
         textview.setText("Note");
     }
@@ -201,7 +216,7 @@ public class MainActivity extends Activity {
             switch (position){
                 case 0:
                 {
-                    starfragment1();//启动fragment1
+                    starfragment1("time");//启动fragment1
                     TextView textview = (TextView)findViewById(R.id.actionbar_title);
                     textview.setText("Note");
                     break;
@@ -235,13 +250,14 @@ public class MainActivity extends Activity {
             }
     }
 
-    public void starfragment1(){
+    public void starfragment1(String sort_Flag){
         fragment1 = new Fragment1();
         Bundle bundle = new Bundle();
         bundle.putString("title",title);
         bundle.putString("note",note);
         bundle.putString("time", time);
         bundle.putString("edittime",edittime);
+        bundle.putString("sortflag",sort_Flag);
         //Log.i("time4",time);
         bundle.putString("flag",flag);
         fragment1.setArguments(bundle);
