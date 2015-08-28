@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.software.shell.fab.ActionButton;
+
 import java.util.List;
 
 /**
@@ -15,10 +17,13 @@ import java.util.List;
  */
 public class Fragment2 extends Fragment {
     private List<Notebook> Notebook;
+    private ActionButton FABbutton;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savadInstanceState){
-        View view = inflater.inflate(R.layout.fragment2,container,false);
+        view = inflater.inflate(R.layout.fragment2,container,false);
+        init_FABbutton();
         return view;
     }
 
@@ -39,5 +44,13 @@ public class Fragment2 extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
 
+    }
+
+    public void init_FABbutton(){
+        FABbutton = (ActionButton)view.findViewById(R.id.plusbuttonofnotebook);
+        FABbutton.setShowAnimation(ActionButton.Animations.JUMP_FROM_DOWN);//设置动画set
+        FABbutton.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);//设置动画set
+        FABbutton.setImageDrawable(getResources().getDrawable(R.drawable.fab_plus_icon));//设置background
+        FABbutton.setButtonColor(getResources().getColor(R.color.fab_mdcolor));
     }
 }

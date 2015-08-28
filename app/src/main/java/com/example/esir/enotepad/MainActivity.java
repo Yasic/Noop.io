@@ -31,6 +31,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -138,7 +139,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public void addfabbutton(){
+    /*public void addfabbutton(){
         //fabbutton = (ActionButton)findViewById(R.id.plusbutton);
         fabbutton.setShowAnimation(ActionButton.Animations.JUMP_FROM_DOWN);//设置动画set
         fabbutton.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);//设置动画set
@@ -153,9 +154,9 @@ public class MainActivity extends Activity {
                 startactivitywithresult(8080, intent);
             }
         });
-    }
+    }*/
 
-    public void startactivitywithresult(int requstcode,Intent intent){
+    /*public void startactivitywithresult(int requstcode,Intent intent){
         title = null;
         note = null;
         time = null;
@@ -167,7 +168,7 @@ public class MainActivity extends Activity {
         bundle.putString("flag", flag);
         intent.putExtras(bundle);
         startActivityForResult(intent, requstcode);//启动Noteedit.class,传递null值
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)//activity回调

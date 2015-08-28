@@ -114,7 +114,7 @@ public class Fragment1 extends Fragment {
     }
 
     public void init_FABbutton(){
-        FABbutton = (ActionButton)view.findViewById(R.id.plusbutton);
+        FABbutton = (ActionButton)view.findViewById(R.id.plusbuttonfornote);
         FABbutton.setShowAnimation(ActionButton.Animations.JUMP_FROM_DOWN);//设置动画set
         FABbutton.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);//设置动画set
         FABbutton.setImageDrawable(getResources().getDrawable(R.drawable.fab_plus_icon));//设置background
