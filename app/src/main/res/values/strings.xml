@@ -23,4 +23,6 @@
     <color name="color_16">#88ff9800</color>
     <color name="color_17">#88ff5722</color>
     <color name="color_18">#88795548</color>
+    
+    <color name="cornor_stroke">#a9a9a9</color>
 </resources>
