@@ -39,7 +39,8 @@ public class Myadapterfornote extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public class ViewHolder{
+
+    private class ViewHolder{
         TextView notetitle;
         TextView notebody;
         TextView notetime;

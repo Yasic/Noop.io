@@ -207,7 +207,7 @@ public class MainActivity extends Activity {
     public void setdrawmenu(){
         drawmenu = new ArrayList<Drawmenu>();
         drawmenu.add(new Drawmenu(R.drawable.ic_file_outline_black_48dp,"Note"));
-        drawmenu.add(new Drawmenu(R.drawable.ic_server_black_48dp, "Notebooks"));
+        drawmenu.add(new Drawmenu(R.drawable.ic_server_black_48dp, "Reminders"));
         drawmenu.add(new Drawmenu(R.drawable.ic_settings_black_48dp,"Settings"));
         drawmenu.add(new Drawmenu(R.drawable.ic_delete_black_48dp, "Trash"));
         drawmenu.add(new Drawmenu(R.drawable.ic_emoticon_devil_black_48dp, "About"));
@@ -227,7 +227,7 @@ public class MainActivity extends Activity {
                     fragment2 = new Fragment2();
                     getFragmentManager().beginTransaction().replace(R.id.mainlayout, fragment2).commit();
                     TextView textview = (TextView)findViewById(R.id.actionbar_title);
-                    textview.setText("Notebooks");
+                    textview.setText("Reminders");
                     break;
                 }
                 case 2:

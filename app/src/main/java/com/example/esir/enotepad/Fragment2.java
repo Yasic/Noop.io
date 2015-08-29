@@ -9,10 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.software.shell.fab.ActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +24,15 @@ public class Fragment2 extends Fragment implements NotebookDialog_setting{
     private List<Notebook> Notebook;
     private ActionButton FABbutton;
     private View view;
+    private List<Notebook> notebooks = null;
+    private Myadapterfornotebook myadapterfornotebook;
+    private GridView notebookList_Gridview;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savadInstanceState){
         view = inflater.inflate(R.layout.fragment2,container,false);
         init_FABbutton();
+        init_NotebookList();
         return view;
     }
 
@@ -65,8 +71,18 @@ public class Fragment2 extends Fragment implements NotebookDialog_setting{
         });
     }
 
+    public void init_NotebookList(){
+        notebooks = new ArrayList<Notebook>();
+        myadapterfornotebook = new Myadapterfornotebook(getActivity(),notebooks);
+        notebookList_Gridview = (GridView)view.findViewById(R.id.notebookList);
+        notebookList_Gridview.setAdapter(myadapterfornotebook);
+    }
+
     @Override
     public void onSetting(String notebook_title, String notebook_description) {
-        Toast.makeText(getActivity(),"title:"+notebook_title+"\n"+"description:"+notebook_description,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(),"title:"+notebook_title+"\n"+"description:"+notebook_description,Toast.LENGTH_LONG).show();
+        notebooks.add(new Notebook(notebook_title,"3",notebook_description,"2015-8-29-18:39","red"));
+        myadapterfornotebook.notifyDataSetChanged();
+        notebookList_Gridview.invalidateViews();
     }
 }

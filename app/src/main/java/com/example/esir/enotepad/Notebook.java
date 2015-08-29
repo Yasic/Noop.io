@@ -4,13 +4,18 @@ package com.example.esir.enotepad;
  * Created by ESIR on 2015/6/6.
  */
 public class Notebook {
-    private String notebookName;
-    private String notebookCount;
-    private String notebookDescription;
+    public String notebookTitle;
+    public String notebookCount;
+    public String notebookDescription;
+    public String notebookTime;
+    public String notebookColor;
 
-    public void Notebook(String notebookName,String notebookCount,String notebookDescription){
-        this.notebookName = notebookName;
+    public Notebook(String notebookTitle,String notebookCount,String notebookDescription,String notebookTime,String notebookColor){
+        super();
+        this.notebookTitle = notebookTitle;
         this.notebookCount = notebookCount;
         this.notebookDescription = notebookDescription;
+        this.notebookTime = notebookTime;
+        this.notebookColor = notebookColor;
     }
 }

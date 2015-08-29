@@ -96,18 +96,6 @@ public class Fragment1 extends Fragment {
         Note = null;
         Note = new ArrayList<Note>();
         helper = new ENoteSQLitedbhelper(getActivity(),"ENote", 1);//开启数据库
-        /*if(getIntent_title(bundle) != null | getIntent_note(bundle) != null) {//这里接收mainactivity传递的东西,如果不为空则需要新建插入到数据库
-            //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            //time = simpleDateFormat.format(new java.util.Date());//get system time
-            //Note.add(new Note(title, note,bundle.getString("edittime")));
-            ContentValues values = new ContentValues();
-            values.put("TITLE",getIntent_title(bundle));
-            values.put("NOTE",getIntent_note(bundle));
-            values.put("TIME",bundle.getString("edittime"));
-            values.put("COLOR",getIntent_notecolor(bundle));
-            Log.i("test2test", title);
-            helper.getWritableDatabase().insert("NOTETABLE", null, values);//插入新的数据
-        }*/
         dboutput(helper);//数据库数据调出
         helper.close();//此处关闭数据库
         adapter = new Myadapterfornote(getActivity(),Note);//以Note生成adapter
