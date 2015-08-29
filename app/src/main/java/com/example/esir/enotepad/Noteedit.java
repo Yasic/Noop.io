@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -74,6 +75,7 @@ public class Noteedit extends Activity{
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         RecyclerView ColorRecyclerView = (RecyclerView)findViewById(R.id.ColorRecyclerView);
         ColorRecyclerView.setLayoutManager(layoutManager);
+        //ColorRecyclerView.setItemAnimator(new DefaultItemAnimator());
         List Colorlist = new ArrayList<Integer>();
         Getcolors getcolors = new Getcolors();
         for(int i = 0;i < getcolors.getColorCount();i++){

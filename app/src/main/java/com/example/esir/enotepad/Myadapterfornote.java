@@ -133,7 +133,6 @@ public class Myadapterfornote extends BaseAdapter {
                 convertView.findViewById(R.id.notecolorTextView).setBackgroundResource(R.drawable.cornor_color18);
                 break;
         }
-        //convertView.findViewById(R.id.notecolorTextView).setBackgroundColor(Color.parseColor(suducolor));
         viewholder = new ViewHolder();
         viewholder.notetitle = (TextView)convertView.findViewById(R.id.notetitle_cardview);
         viewholder.notebody = (TextView)convertView.findViewById(R.id.notebody_cardview);

@@ -37,9 +37,9 @@ public class Myadapterfornotebook extends BaseAdapter {
         return position;
     }
     public class ViewHolder{
-        TextView notebookname;
-        TextView notebooktime;
-        TextView notebookdescription;
+        TextView notebookName;
+        TextView notebookCount;
+        TextView notebookDescription;
     }
 
     @Override

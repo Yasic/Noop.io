@@ -2,11 +2,14 @@ package com.example.esir.enotepad;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.software.shell.fab.ActionButton;
 
@@ -15,7 +18,7 @@ import java.util.List;
 /**
  * Created by ESIR on 2015/5/29.
  */
-public class Fragment2 extends Fragment {
+public class Fragment2 extends Fragment implements NotebookDialog_setting{
     private List<Notebook> Notebook;
     private ActionButton FABbutton;
     private View view;
@@ -52,5 +55,18 @@ public class Fragment2 extends Fragment {
         FABbutton.setHideAnimation(ActionButton.Animations.JUMP_TO_DOWN);//设置动画set
         FABbutton.setImageDrawable(getResources().getDrawable(R.drawable.fab_plus_icon));//设置background
         FABbutton.setButtonColor(getResources().getColor(R.color.fab_mdcolor));
+        FABbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotebookDialog notebookDialog = new NotebookDialog(getActivity(), R.style.notebookDialog);
+                notebookDialog.setOnNotebookDialogListener(Fragment2.this);
+                notebookDialog.show();
+            }
+        });
+    }
+
+    @Override
+    public void onSetting(String notebook_title, String notebook_description) {
+        Toast.makeText(getActivity(),"title:"+notebook_title+"\n"+"description:"+notebook_description,Toast.LENGTH_LONG).show();
     }
 }
