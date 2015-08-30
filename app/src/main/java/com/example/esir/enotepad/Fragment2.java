@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,13 +37,15 @@ import java.util.List;
 /**
  * Created by ESIR on 2015/5/29.
  */
-public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePickerDialog.OnTimeSetListener,DatePickerDialog.OnDateSetListener{
+public class Fragment2 extends Fragment implements ReminderDialog_setting{
     private List<Notebook> Notebook;
     private ActionButton FABbutton;
     private View view;
-    private List<Notebook> notebooks = null;
+    private List<Reminder> reminders = null;
+    private Myadapterforreminder myadapterforreminder;
     private Myadapterfornotebook myadapterfornotebook;
     private GridView notebookList_Gridview;
+    private GridView reminderList_Gridview;
     private TextView tvTime,tvOptions;
     private TimePopupWindow pwTime;
     private String Reminder_Title,Reminder_Description;
@@ -50,7 +54,7 @@ public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePi
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savadInstanceState){
         view = inflater.inflate(R.layout.fragment2,container,false);
         init_FABbutton();
-        init_NotebookList();
+        init_ReminderList();
         return view;
     }
 
@@ -89,11 +93,28 @@ public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePi
         });
     }
 
-    public void init_NotebookList(){
-        notebooks = new ArrayList<Notebook>();
-        myadapterfornotebook = new Myadapterfornotebook(getActivity(),notebooks);
-        notebookList_Gridview = (GridView)view.findViewById(R.id.notebookList);
-        notebookList_Gridview.setAdapter(myadapterfornotebook);
+    public void init_ReminderList(){
+        reminders = new ArrayList<Reminder>();
+        myadapterforreminder = new Myadapterforreminder(getActivity(),reminders);
+        reminderList_Gridview = (GridView)view.findViewById(R.id.reminderList);
+        reminderList_Gridview.setAdapter(myadapterforreminder);
+        reminderDBout();
+    }
+
+    public void reminderDBout(){
+        ENoteSQLitedbhelperforrenminder eNoteSQLitedbhelperforrenminder = new ENoteSQLitedbhelperforrenminder(getActivity(),"ENOTE",1);
+        Cursor cursor = null;
+        cursor = eNoteSQLitedbhelperforrenminder.getReadableDatabase().query("REMINDER",null,null,null,null,null,"TIME ASC");
+        while (cursor.moveToNext()) {
+            reminders.add(new Reminder(
+                    cursor.getString(cursor.getColumnIndex("TITLE")),
+                    cursor.getString(cursor.getColumnIndex("DESCRIPTION")),
+                    cursor.getString(cursor.getColumnIndex("TIME"))
+            ));
+        }
+        eNoteSQLitedbhelperforrenminder.close();
+        myadapterforreminder.notifyDataSetChanged();
+        reminderList_Gridview.invalidateViews();
     }
 
     @Override
@@ -123,6 +144,7 @@ public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePi
                         Bundle bundle = new Bundle();
                         bundle.putString("Reminder_Title",Reminder_Title);
                         bundle.putString("Reminder_Description",Reminder_Description);
+                        bundle.putString("Reminder_Time",date.toString());
                         intent.putExtras(bundle);
                         //PendingIntent reminderPendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, 0);
                         PendingIntent reminderPendingIntent = PendingIntent.getService(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -131,6 +153,8 @@ public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePi
                         alarmManager.set(AlarmManager.RTC_WAKEUP,
                                 setReminderTime.getTimeInMillis(), reminderPendingIntent);
                         Toast.makeText(getActivity(),"ok~~",Toast.LENGTH_LONG).show();
+
+                        insertDB(Reminder_Title, Reminder_Description, date.toString());
                     }
                     //tvTime.setText(getTime(date));
                 }
@@ -140,7 +164,19 @@ public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePi
         }
     }
 
-    @Override
+    public void insertDB(String Reminder_Title,String Reminder_Description,String date){
+        ENoteSQLitedbhelper eNoteSQLitedbhelper = new ENoteSQLitedbhelper(getActivity(),"ENOTE",1);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("TITLE",Reminder_Title);
+        contentValues.put("DESCRIPTION",Reminder_Description);
+        contentValues.put("TIME",date);
+        eNoteSQLitedbhelper.getWritableDatabase().insert("REMINDER", null,contentValues);
+        eNoteSQLitedbhelper.close();
+        reminders.clear();
+        reminderDBout();
+    }
+
+    /*@Override
     public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
 
     }
@@ -148,7 +184,7 @@ public class Fragment2 extends Fragment implements ReminderDialog_setting,TimePi
     @Override
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int i, int i1) {
 
-    }
+    }*/
 
     public static String getTime(java.util.Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");

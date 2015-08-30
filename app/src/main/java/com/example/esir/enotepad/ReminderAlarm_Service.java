@@ -3,6 +3,7 @@ package com.example.esir.enotepad;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -77,7 +78,7 @@ public class ReminderAlarm_Service extends Service{
         reminderalarm_title.setText(bundle.get("Reminder_Title").toString());
         TextView reminderalarm_description = (TextView)mFloatLayout.findViewById(R.id.reminderalarm_description);
         reminderalarm_description.setText(bundle.get("Reminder_Description").toString());
-
+        deleteReminderDB(bundle);
         floatwindowbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +90,12 @@ public class ReminderAlarm_Service extends Service{
         });
 
         return super.onStartCommand(intent,flags,startId);
+    }
+
+    public void deleteReminderDB(Bundle bundle){
+        ENoteSQLitedbhelperforrenminder eNoteSQLitedbhelperforrenminder = new ENoteSQLitedbhelperforrenminder(getApplicationContext(),"ENOTE",1);
+        eNoteSQLitedbhelperforrenminder.getWritableDatabase().delete("REMINDER","TIME = ?",new String[]{bundle.getString("Reminder_Time")});
+        eNoteSQLitedbhelperforrenminder.close();
     }
 
     private int dp2pix(int dp){
