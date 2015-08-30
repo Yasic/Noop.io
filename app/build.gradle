@@ -44,4 +44,6 @@ dependencies {
     compile files('libs/fastjson.jar')
     compile files('libs/httpmime-4.2.4.jar')
     compile 'com.android.support:design:22.2.0'
+    compile 'com.wdullaer:materialdatetimepicker:1.4.2'
+    compile 'com.bigkoo:pickerview:1.0.0'
 }

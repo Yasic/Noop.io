@@ -43,10 +43,13 @@ public class NotebookDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.notebookdialog_okbutton:
-                if(DialogListener != null){
+                NotebookDialog notebookDialog = new NotebookDialog(getContext(), R.style.notebookDialog);
+                //notebookDialog.setOnNotebookDialogListener(Fragment2.this);
+                notebookDialog.show();
+                /*if(DialogListener != null){
                     DialogListener.onSetting(notebookdialog_title.getText().toString(),notebookdialog_description.getText().toString());
                     dismiss();
-                }
+                }*/
                 break;
             case R.id.notebookdialog_cancelbutton:
                 dismiss();
