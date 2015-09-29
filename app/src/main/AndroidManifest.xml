@@ -31,6 +31,9 @@
         <activity android:name=".ReminderAlarm"
             android:theme="@android:style/Theme.NoDisplay">
         </activity>
+        <activity
+            android:name=".Testpart"
+            android:theme="@style/TestTheme"/>
         <service android:name=".ReminderAlarm_Service">
         </service>
     </application>

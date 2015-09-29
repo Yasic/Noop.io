@@ -1,5 +1,6 @@
 package com.example.esir.enotepad;
 
+import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
@@ -14,16 +15,20 @@ import android.graphics.Color;
 import android.graphics.Interpolator;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +70,25 @@ public class Login extends Activity {
         Typeface typefacea = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Bookman_Old_Style.TTF");
         Typeface typefaceb = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Blackletter686BT.TTF");
         login_appmessage.setTypeface(typefaceb);
+        login_appname.setTypeface(typefacea);
+        textAnimationStart();
         init();
+    }
+
+    public void textAnimationStart(){
+        TextView login_appname = (TextView)findViewById(R.id.login_appname);
+        TextView login_appmessage = (TextView)findViewById(R.id.login_appmessage);
+        RelativeLayout login_appmessagelayout = (RelativeLayout)findViewById(R.id.login_appmessagelayout);
+        int screenWidth = getScreenWidth();
+        int screenHeight = getScreenHeight();
+        ObjectAnimator objectanimator = ObjectAnimator.ofFloat(login_appname,"translationY",screenHeight,dip2px(getApplicationContext(),7));
+        objectanimator.setDuration(1000);
+        objectanimator.setInterpolator(new AnticipateOvershootInterpolator());
+        objectanimator.start();
+        ObjectAnimator objectanimator1 = ObjectAnimator.ofFloat(login_appmessagelayout,"translationY",screenHeight,dip2px(getApplicationContext(),0));
+        objectanimator1.setDuration(1000);
+        objectanimator1.setInterpolator(new AnticipateOvershootInterpolator());
+        objectanimator1.start();
     }
 
     public void init(){
@@ -79,7 +102,7 @@ public class Login extends Activity {
                 finish();
             }
         };
-        timer.schedule(timerTask,2000);
+        timer.schedule(timerTask,1500);
         //usernameedit = (EditText)findViewById(R.id.usernameedit);
         //usernameedit.setVisibility(View.GONE);
         //emailedit = (EditText)findViewById(R.id.emailedit);
@@ -300,7 +323,7 @@ public class Login extends Activity {
             @Override
             public void onAnimationUpdate(ValueAnimator animation){
                 int animatorvaluewidth = (int) animation.getAnimatedValue("Width");
-                denglubutton.setLayoutParams(new LinearLayout.LayoutParams(dip2px(getApplicationContext(),animatorvaluewidth), ViewGroup.LayoutParams.MATCH_PARENT));
+                denglubutton.setLayoutParams(new LinearLayout.LayoutParams(dip2px(getApplicationContext(), animatorvaluewidth), ViewGroup.LayoutParams.MATCH_PARENT));
             }
         });
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -358,5 +381,17 @@ public class Login extends Activity {
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
+    }
+
+    public int getScreenWidth(){
+        DisplayMetrics metrics = new DisplayMetrics();
+        Login.this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;//获取屏幕宽度
+    }
+
+    public int getScreenHeight(){
+        DisplayMetrics metrics = new DisplayMetrics();
+        Login.this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return  metrics.heightPixels;//获取屏幕宽度
     }
 }

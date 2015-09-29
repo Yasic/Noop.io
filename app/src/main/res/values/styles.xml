@@ -17,4 +17,15 @@
         <item name="android:windowFrame">@null</item>
     </style>
 
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">#FF4081</item>
+    </style>
+
+    <style name="TestTheme" parent="BaseAppTheme">
+
+    </style>
+
 </resources>

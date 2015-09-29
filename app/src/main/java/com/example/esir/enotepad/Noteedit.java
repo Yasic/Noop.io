@@ -15,12 +15,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.KeyException;
@@ -54,6 +56,10 @@ public class Noteedit extends Activity{
     }
 
     public void init(){
+        ViewGroup contentView = (ViewGroup) Noteedit.this.findViewById(android.R.id.content);
+        TextView contentview = (TextView)findViewById(R.id.contentView);
+        contentview.setHeight(contentView.getHeight() + dp2pix(16));
+
         notedeletebutton = (Button)findViewById(R.id.notedeletebutton);
         notedeletebutton.setVisibility(View.GONE);//默认隐藏删除按钮
         notecolor = "0";//默认为白色
@@ -83,9 +89,9 @@ public class Noteedit extends Activity{
         }
         final ColorRecyclerview_adapter colorRecyclerview_adapter = new ColorRecyclerview_adapter(this,Colorlist);
         ColorRecyclerView.setAdapter(colorRecyclerview_adapter);
-        colorRecyclerview_adapter.setOnItemClickListener(new ColorRecyclerview_adapter.OnRecyclerViewItemClickListener(){
+        colorRecyclerview_adapter.setOnItemClickListener(new ColorRecyclerview_adapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onItemClick(View view,String data){
+            public void onItemClick(View view, String data) {
                 Getcolors getcolors = new Getcolors();
                 changeColor(data);
                 notecolor = data;
@@ -235,5 +241,11 @@ public class Noteedit extends Activity{
             builder.create().show();
         }
         return false;
+    }
+
+    private int dp2pix(int dp){
+        final float scale = getResources().getDisplayMetrics().density;
+        int pix = (int) (dp * scale + 0.5f);
+        return pix;
     }
 }

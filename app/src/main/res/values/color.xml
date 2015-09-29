@@ -7,4 +7,8 @@
 
     <color name="mdtp_accent_color">#009688</color>
     <color name="mdtp_accent_color_dark">#00796b</color>
+
+    <color name="primary">#FF03A9F4</color>
+    <color name="primary_dark">#FF0288D1</color>
+    <color name="status_bar_color">@color/primary_dark</color>
 </resources>

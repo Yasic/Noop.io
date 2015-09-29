@@ -1,5 +1,6 @@
 package com.example.esir.enotepad;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,14 +19,19 @@ import android.media.SoundPool;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -51,7 +57,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends Activity implements com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener,DatePickerDialog.OnDateSetListener{
+public class MainActivity extends AppCompatActivity implements com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener,DatePickerDialog.OnDateSetListener{
     //private String[] data = {"Name","Note","Notebooks","Trash","Settings","About"};
     private ListView listview;
     private List<Drawmenu> drawmenu;//侧边栏菜单
@@ -87,7 +93,31 @@ public class MainActivity extends Activity implements com.wdullaer.materialdatet
         actionbar_title.setTypeface(getfonts.get_Futura_Book());
     }
 
+    public static int getStatusBarHeight(Context context)
+    {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0)
+        {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     public void init(){
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);*/
+
+        ViewGroup contentView = (ViewGroup) MainActivity.this.findViewById(android.R.id.content);
+        TextView contentview = (TextView)findViewById(R.id.contentView);
+        contentview.setHeight(contentView.getHeight()+dp2pix(16));
+        /*View statusBarView = new View(MainActivity.this);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                getStatusBarHeight(MainActivity.this));
+        statusBarView.setBackgroundColor( Color.parseColor("#3399ff"));
+        contentView.addView(statusBarView, lp);*/
+
         setdrawmenu();//添加侧边栏按钮
         ListAdapter adapter = new Myadapter(this,drawmenu);
         listview = (ListView)findViewById(R.id.menulist);//获取menulist实例
@@ -98,6 +128,38 @@ public class MainActivity extends Activity implements com.wdullaer.materialdatet
                 selectitem(position);//侧边栏选项监听动作
             }
         });
+
+        Button menuButton = (Button)findViewById(R.id.menubutton);
+        TextView actionbar_title = (TextView)findViewById(R.id.actionbar_title);
+        Button syncbutton = (Button)findViewById(R.id.syncbutton);
+        syncbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Testpart.class);
+                startActivity(intent);
+            }
+        });
+        Button sortbutton = (Button)findViewById(R.id.sortbutton);
+        DisplayMetrics metrics = new DisplayMetrics();
+        MainActivity.this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int screenWidth = metrics.widthPixels;
+        int screenHeight = metrics.heightPixels;
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(menuButton,"translationX",-screenWidth,0);
+        objectAnimator.setDuration(2000);
+        objectAnimator.setInterpolator(new AnticipateOvershootInterpolator());
+        objectAnimator.start();
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(sortbutton,"translationX",-screenWidth,0);
+        objectAnimator1.setDuration(2000);
+        objectAnimator1.setInterpolator(new AnticipateOvershootInterpolator());
+        objectAnimator1.start();
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(syncbutton,"translationX",-screenWidth,0);
+        objectAnimator2.setDuration(2000);
+        objectAnimator2.setInterpolator(new AnticipateOvershootInterpolator());
+        objectAnimator2.start();
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(actionbar_title,"translationX",-screenWidth,0);
+        objectAnimator3.setDuration(2000);
+        objectAnimator3.setInterpolator(new AnticipateOvershootInterpolator());
+        objectAnimator3.start();
     }
 
     public void inituserinfo(){
@@ -276,5 +338,11 @@ public class MainActivity extends Activity implements com.wdullaer.materialdatet
     @Override
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int i, int i1) {
 
+    }
+
+    private int dp2pix(int dp){
+        final float scale = getResources().getDisplayMetrics().density;
+        int pix = (int) (dp * scale + 0.5f);
+        return pix;
     }
 }

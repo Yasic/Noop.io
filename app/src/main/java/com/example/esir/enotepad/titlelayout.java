@@ -29,11 +29,11 @@ public class titlelayout extends LinearLayout {
             public void onClick(View v) {
             }
         });
-        asyncbutton.setOnClickListener(new OnClickListener() {
+        /*asyncbutton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Syncbutton is touched!",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 }
