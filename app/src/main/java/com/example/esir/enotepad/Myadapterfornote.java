@@ -1,12 +1,17 @@
 package com.example.esir.enotepad;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -134,6 +139,9 @@ public class Myadapterfornote extends BaseAdapter {
                 convertView.findViewById(R.id.notecolorTextView).setBackgroundResource(R.drawable.cornor_color18);
                 break;
         }
+
+        //convertView.setAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(),R.anim.layout_registerbuttonanim));
+
         viewholder = new ViewHolder();
         viewholder.notetitle = (TextView)convertView.findViewById(R.id.notetitle_cardview);
         viewholder.notebody = (TextView)convertView.findViewById(R.id.notebody_cardview);
@@ -141,6 +149,7 @@ public class Myadapterfornote extends BaseAdapter {
         viewholder.notetitle.setText(Note.title);
         viewholder.notebody.setText(Note.body);
         viewholder.notetime.setText(Note.time);
+
         return convertView;
     }
 }

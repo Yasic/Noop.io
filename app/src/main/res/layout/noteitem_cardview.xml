@@ -27,29 +27,32 @@
                 android:id="@+id/notetitle_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#323232"
                 android:layout_marginTop="3dp"
                 android:singleLine="true"
                 android:gravity="center_vertical"
-                android:textSize="24dp"
+                android:textSize="22sp"
                 >
             </TextView>
             <TextView
                 android:id="@+id/notebody_cardview"
                 android:singleLine="true"
                 android:layout_width="match_parent"
+                android:textColor="#545454"
                 android:layout_marginTop="3dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textSize="21dp">
+                android:textSize="16sp">
             </TextView>
             <TextView
                 android:id="@+id/notetime_cardview"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
+                android:textColor="#767676"
                 android:gravity="center_vertical"
                 android:layout_marginTop="3dp"
                 android:layout_height="wrap_content"
-                android:textSize="16dp">
+                android:textSize="12sp">
             </TextView>
         </LinearLayout>
         <LinearLayout
@@ -69,11 +72,12 @@
             <LinearLayout
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:gravity="center">
                 <TextView
                     android:id="@+id/notecolorTextView"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="16dp" />

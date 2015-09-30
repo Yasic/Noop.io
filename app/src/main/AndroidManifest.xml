@@ -34,6 +34,8 @@
         <activity
             android:name=".Testpart"
             android:theme="@style/TestTheme"/>
+        <activity android:name=".Kotlintest">
+        </activity>
         <service android:name=".ReminderAlarm_Service">
         </service>
     </application>

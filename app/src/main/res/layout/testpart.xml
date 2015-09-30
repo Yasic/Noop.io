@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-
-    <LinearLayout
-        android:id="@+id/id_main_content"
+    android:layout_height="match_parent">
+    <!--toolbar-->
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/id_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:fitsSystemWindows="true"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            />
 
+    </android.support.design.widget.AppBarLayout>
+
+    <ListView
+        android:id="@+id/rv_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <!--底部操作栏-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#ff0000"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        app:layout_behavior="com.example.esir.enotepad.TitleBarBehavior">
 
         <TextView
-            android:id="@+id/id_tv_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="HelloWorld"
-            android:textSize="30sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加你的评论"
+            android:drawablePadding="5dp"
+            android:textColor="@android:color/white" />
+
+
+        <ImageView
+            android:layout_marginLeft="29dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/id_nv_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/header_just_username"
-        />
-</android.support.v4.widget.DrawerLayout>
+</android.support.design.widget.CoordinatorLayout>

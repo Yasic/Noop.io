@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/fragment1"
     android:background="#f7f8f3">
-    <ListView
+    <com.twotoasters.jazzylistview.JazzyListView
         android:id="@+id/noteList"
         android:layout_marginTop="3dp"
         android:scrollbars="none"
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:divider="#ffffff"
         android:layout_height="match_parent">
-    </ListView>
+    </com.twotoasters.jazzylistview.JazzyListView>
     <com.software.shell.fab.ActionButton
         android:id="@+id/plusbuttonfornote"
         android:layout_width="wrap_content"

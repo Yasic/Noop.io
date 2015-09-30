@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/menubutton"
-        android:layout_height="30dp"
-        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_width="35dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:gravity="center"
@@ -35,8 +35,8 @@
 
     <Button
         android:id="@+id/syncbutton"
-        android:layout_height="32dp"
-        android:layout_width="32dp"
+        android:layout_height="35dp"
+        android:layout_width="35dp"
         android:gravity="center"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
@@ -48,8 +48,8 @@
         </Button>
         <Button
             android:id="@+id/sortbutton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginRight="14dp"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_sort_variant_white_48dp"

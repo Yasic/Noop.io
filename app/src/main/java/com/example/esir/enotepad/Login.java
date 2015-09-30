@@ -39,6 +39,8 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SignUpCallback;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
 
 import org.w3c.dom.Text;
 
@@ -67,10 +69,12 @@ public class Login extends Activity {
 
         TextView login_appname = (TextView)findViewById(R.id.login_appname);
         TextView login_appmessage = (TextView)findViewById(R.id.login_appmessage);
+        ShimmerTextView shimmerTextView = (ShimmerTextView)findViewById(R.id.login_appname);
         Typeface typefacea = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Bookman_Old_Style.TTF");
         Typeface typefaceb = Typeface.createFromAsset(getBaseContext().getAssets(), "Fonts/Blackletter686BT.TTF");
         login_appmessage.setTypeface(typefaceb);
         login_appname.setTypeface(typefacea);
+        //shimmerTextView.setTypeface(typefacea);
         textAnimationStart();
         init();
     }
@@ -89,6 +93,10 @@ public class Login extends Activity {
         objectanimator1.setDuration(1000);
         objectanimator1.setInterpolator(new AnticipateOvershootInterpolator());
         objectanimator1.start();
+
+        ShimmerTextView shimmerTextView = (ShimmerTextView)findViewById(R.id.login_appname);
+        Shimmer shimmer = new Shimmer();
+        shimmer.start(shimmerTextView);
     }
 
     public void init(){
@@ -102,7 +110,7 @@ public class Login extends Activity {
                 finish();
             }
         };
-        timer.schedule(timerTask,1500);
+        timer.schedule(timerTask,2000);
         //usernameedit = (EditText)findViewById(R.id.usernameedit);
         //usernameedit.setVisibility(View.GONE);
         //emailedit = (EditText)findViewById(R.id.emailedit);

@@ -13,8 +13,8 @@ public class Testpart extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.testpart);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-        setSupportActionBar(toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);*/
         //StatusBarCompat.compat(this, getResources().getColor(R.color.status_bar_color));
         //StatusBarCompat.compat(this);
     }

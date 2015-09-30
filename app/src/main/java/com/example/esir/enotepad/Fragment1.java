@@ -27,6 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.software.shell.fab.ActionButton;
+import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.CurlEffect;
+import com.twotoasters.jazzylistview.effects.FlipEffect;
+import com.twotoasters.jazzylistview.effects.GrowEffect;
+import com.twotoasters.jazzylistview.effects.SlideInEffect;
+import com.twotoasters.jazzylistview.effects.WaveEffect;
 
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 
@@ -42,7 +48,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Created by ESIR on 2015/5/29.
  */
 public class Fragment1 extends Fragment {
-    private ListView noteList;
+    private JazzyListView noteList;
     private View view;
     private  Myadapterfornote adapter;
     private TextView testtext;
@@ -58,8 +64,8 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savadInstanceState){
         view = inflater.inflate(R.layout.fragment1,container,false);
-        additemlistener();//添加长按短按监听
-        init_FABbutton();
+        /*additemlistener();//添加长按短按监听
+        init_FABbutton();*/
         return view;
     }
 
@@ -193,11 +199,14 @@ public class Fragment1 extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        additemlistener();//添加长按短按监听
+        init_FABbutton();
     }
 
     public void  additemlistener(){
-        noteList = (ListView)view.findViewById(R.id.noteList);//获取gridview实例
+        noteList = (JazzyListView)view.findViewById(R.id.noteList);//获取gridview实例
         noteList.setAdapter(adapter);
+        noteList.setTransitionEffect(new WaveEffect());
         noteList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
