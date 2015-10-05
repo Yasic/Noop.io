@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -149,7 +150,23 @@ public class Myadapterfornote extends BaseAdapter {
         viewholder.notetitle.setText(Note.title);
         viewholder.notebody.setText(Note.body);
         viewholder.notetime.setText(Note.time);
+        setLines(viewholder.notebody);
 
         return convertView;
+    }
+
+    public void setLines(final TextView tv){
+        ViewTreeObserver viewTreeObserver = tv.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if(tv.getLineCount() > 3){
+                    int length = tv.getText().length();
+                    int lineIndex = tv.getLayout().getLineStart(3);
+                    String text = tv.getText().toString().substring(0,lineIndex-3) + "..." ;
+                    tv.setText(text);
+                }
+            }
+        });
     }
 }

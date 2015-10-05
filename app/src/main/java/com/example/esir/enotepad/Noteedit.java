@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -69,8 +70,16 @@ public class Noteedit extends Activity{
         getintentdata();//获取intent里的值
         if(title != null | note != null){//不为null则说明是从fragment启动而来，需要修改
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);//关闭输入框弹出
-            titleedittext.setText(title);
-            noteedittext.setText(note);
+            //titleedittext.setText(title);
+            //noteedittext.setText(note);
+            ENoteSQLitedbhelper ENoteDBHelper = new ENoteSQLitedbhelper(Noteedit.this, "ENote", 1);//打开数据库
+            Cursor cursor = ENoteDBHelper.getReadableDatabase().query("NOTETABLE",
+                    new String[]{"NOTE","TITLE","COLOR"},
+                    "TIME=?", new String[]{time}, null, null, null);
+            while (cursor.moveToNext()){
+                noteedittext.setText(cursor.getString(cursor.getColumnIndex("NOTE")));
+                titleedittext.setText(cursor.getString(cursor.getColumnIndex("TITLE")));
+            }
             notedeletebutton.setVisibility(View.VISIBLE);//删除键可见
             flag = "1";  //1则修改
         }

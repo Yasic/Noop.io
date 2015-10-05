@@ -13,7 +13,8 @@
         android:paddingRight="5dp"
         android:layout_width="match_parent"
         android:divider="#ffffff"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_registerbuttonanim">
     </com.twotoasters.jazzylistview.JazzyListView>
     <com.software.shell.fab.ActionButton
         android:id="@+id/plusbuttonfornote"

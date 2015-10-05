@@ -31,14 +31,14 @@
                 android:layout_marginTop="3dp"
                 android:singleLine="true"
                 android:gravity="center_vertical"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 >
             </TextView>
             <TextView
                 android:id="@+id/notebody_cardview"
-                android:singleLine="true"
+                android:singleLine="false"
                 android:layout_width="match_parent"
-                android:textColor="#545454"
+                android:textColor="#656565"
                 android:layout_marginTop="3dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -51,8 +51,9 @@
                 android:textColor="#767676"
                 android:gravity="center_vertical"
                 android:layout_marginTop="3dp"
+                android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:textSize="12sp">
+                android:textSize="13sp">
             </TextView>
         </LinearLayout>
         <LinearLayout
